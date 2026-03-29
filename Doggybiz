@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doggy Business – We Lift It So You Don't Have To</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+–dark: #1C1C1C;
+–green: #3D8B5A;
+–green-light: #5CB878;
+–green-pale: #EBF7EF;
+–cream: #FAF8F3;
+–warm: #F2EDE3;
+–gold: #D4A836;
+–text: #2C2C2C;
+–muted: #888;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: ‘Nunito’, sans-serif; background: var(–cream); color: var(–text); overflow-x: hidden; }
+
+/* TOPBAR */
+.topbar {
+position: fixed; top: 0; left: 0; right: 0;
+background: rgba(28,28,28,0.97); backdrop-filter: blur(8px);
+z-index: 100; padding: 14px 24px;
+display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-brand { font-family: ‘Bebas Neue’, sans-serif; font-size: 22px; letter-spacing: 3px; color: var(–green-light); }
+body { padding-top: 52px; }
+
+/* SECTIONS — hidden by default, revealed when triggered */
+.funnel-section {
+opacity: 0;
+pointer-events: none;
+max-height: 0;
+overflow: hidden;
+transition: opacity 0.6s ease, max-height 0.01s ease;
+}
+.funnel-section.revealed {
+opacity: 1;
+pointer-events: all;
+max-height: none;
+overflow: visible;
+}
+
+/* BUTTONS */
+.btn {
+padding: 18px 28px; border-radius: 4px;
+font-family: ‘Nunito’, sans-serif; font-size: 15px; font-weight: 700;
+cursor: pointer; border: none;
+transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+display: block; width: 100%; text-align: center;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(–green); color: #fff; }
+.btn-primary:hover { background: var(–green-light); }
+.btn-secondary { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); border: 1.5px solid rgba(255,255,255,0.2); }
+.btn-ghost { background: transparent; color: rgba(255,255,255,0.4); font-size: 13px; font-weight: 400; padding: 10px; text-decoration: underline; }
+.btn-ghost:hover { color: rgba(255,255,255,0.7); transform: none; box-shadow: none; }
+.btn-dark { background: var(–dark); color: #fff; }
+.btn-dark:hover { background: #333; }
+.btn-outline-muted { background: transparent; color: var(–muted); border: 1.5px solid #ddd; font-size: 13px; font-weight: 600; }
+.btn-outline-muted:hover { border-color: #aaa; color: var(–text); }
+
+/* ===== HOOK ===== */
+#hook {
+background: var(–dark);
+min-height: 100vh;
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+text-align: center; padding: 60px 24px; position: relative; overflow: hidden;
+}
+#hook::before {
+content: ‘’; position: absolute; inset: 0;
+background: radial-gradient(ellipse at 20% 80%, rgba(61,139,90,0.3) 0%, transparent 55%),
+radial-gradient(ellipse at 85% 15%, rgba(212,168,54,0.15) 0%, transparent 45%);
+pointer-events: none;
+}
+.hook-paw { font-size: 72px; margin-bottom: 28px; display: block; animation: bounce 2.5s ease-in-out infinite; position: relative; }
+@keyframes bounce { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-14px) rotate(5deg)} }
+.hook-brand { font-family:‘Bebas Neue’,sans-serif; font-size: clamp(16px,3.5vw,22px); letter-spacing: 6px; color: var(–green-light); margin-bottom: 20px; position: relative; }
+.hook-headline { font-family:‘Bebas Neue’,sans-serif; font-size: clamp(52px,12vw,120px); line-height: 0.92; color: #fff; position: relative; margin-bottom: 12px; }
+.hook-headline em { color: var(–green-light); font-style: normal; }
+.hook-sub { font-size: 17px; color: rgba(255,255,255,0.5); margin-bottom: 56px; font-weight: 300; position: relative; }
+.hook-buttons { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 420px; position: relative; }
+
+/* ===== ABOUT ===== */
+#about { background: var(–cream); }
+.about-hero { background: var(–green); padding: 80px 24px 60px; text-align: center; color: #fff; }
+.about-hero h2 { font-family:‘Bebas Neue’,sans-serif; font-size: clamp(38px,8vw,70px); letter-spacing: 1px; margin-bottom: 14px; }
+.about-hero p { font-size: 17px; opacity: 0.85; font-weight: 300; max-width: 480px; margin: 0 auto; line-height: 1.6; }
+.about-steps { max-width: 640px; margin: 0 auto; padding: 60px 24px; }
+.step { display: flex; gap: 20px; margin-bottom: 36px; align-items: flex-start; }
+.step-icon { font-size: 30px; flex-shrink: 0; width: 54px; height: 54px; background: var(–green-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.step-text h3 { font-size: 18px; font-weight: 700; margin-bottom: 5px; color: var(–dark); }
+.step-text p { font-size: 15px; color: #555; line-height: 1.6; font-weight: 300; }
+.about-cta-box { background: var(–warm); border-top: 1px solid rgba(0,0,0,0.07); padding: 60px 24px; text-align: center; }
+.about-cta-box h3 { font-family:‘Bebas Neue’,sans-serif; font-size: 38px; margin-bottom: 8px; color: var(–dark); }
+.about-cta-box p { color: var(–muted); font-size: 15px; margin-bottom: 32px; font-weight: 300; }
+.about-buttons { display: flex; flex-direction: column; gap: 12px; max-width: 380px; margin: 0 auto; }
+
+/* ===== PRICING ===== */
+#pricing { background: var(–cream); }
+.pricing-header { background: var(–dark); padding: 80px 24px 50px; text-align: center; color: #fff; }
+.pricing-header h2 { font-family:‘Bebas Neue’,sans-serif; font-size: clamp(40px,9vw,80px); letter-spacing: 1px; margin-bottom: 10px; }
+.pricing-header p { font-size: 16px; color: rgba(255,255,255,0.5); font-weight: 300; }
+.offer-banner { background: var(–gold); color: var(–dark); text-align: center; padding: 14px 24px; font-weight: 700; font-size: 15px; }
+.offer-banner span { font-weight: 300; }
+.plans-wrap { max-width: 1060px; margin: 0 auto; padding: 60px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; align-items: start; }
+.plan { background: #fff; border-radius: 6px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; }
+.plan:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.1); }
+.plan-header { padding: 30px 28px 24px; background: var(–green-pale); border-bottom: 1px solid rgba(61,139,90,0.15); }
+.plan.featured .plan-header { background: var(–green); border-bottom-color: transparent; }
+.plan-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: var(–green); margin-bottom: 10px; display: block; }
+.plan.featured .plan-tag { color: rgba(255,255,255,0.7); }
+.plan-name { font-family:‘Bebas Neue’,sans-serif; font-size: 38px; letter-spacing: 1px; color: var(–dark); margin-bottom: 4px; }
+.plan.featured .plan-name { color: #fff; }
+.plan-freq-label { font-size: 13px; color: #888; font-weight: 300; }
+.plan.featured .plan-freq-label { color: rgba(255,255,255,0.65); }
+.plan-body { padding: 28px; }
+.price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+.price-big { font-family:‘Bebas Neue’,sans-serif; font-size: 56px; color: var(–dark); line-height: 1; }
+.price-unit { font-size: 14px; color: var(–muted); font-weight: 300; }
+.price-monthly { font-size: 14px; color: var(–green); font-weight: 700; margin-bottom: 4px; }
+.price-first { font-size: 13px; color: var(–gold); font-weight: 700; margin-bottom: 20px; background: #FFF8E7; display: inline-block; padding: 4px 10px; border-radius: 3px; }
+.dog-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding: 12px 14px; background: var(–cream); border-radius: 4px; flex-wrap: wrap; }
+.dog-row label { font-size: 13px; font-weight: 600; flex: 1; min-width: 80px; }
+.counter-wrap { display: flex; align-items: center; gap: 10px; }
+.cnt-btn { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(–dark); background: transparent; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; font-family: ‘Nunito’, sans-serif; }
+.cnt-btn:hover { background: var(–dark); color: #fff; }
+.cnt-num { font-weight: 700; font-size: 16px; min-width: 18px; text-align: center; }
+.cnt-extra { font-size: 12px; color: var(–green); font-weight: 700; }
+.plan-features { list-style: none; margin-bottom: 24px; }
+.plan-features li { font-size: 14px; padding: 7px 0; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 8px; font-weight: 400; color: #444; }
+.plan-features li::before { content: ‘✓’; color: var(–green); font-weight: 700; font-size: 13px; }
+.plan-cta { width: 100%; padding: 15px; border-radius: 4px; background: var(–green); color: #fff; border: none; font-family: ‘Nunito’, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.15s; }
+.plan-cta:hover { background: var(–green-light); transform: translateY(-1px); }
+.oneoff .plan-header { background: #F5F5F5; }
+.oneoff-price { font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 20px; font-weight: 300; }
+.oneoff-price strong { font-size: 40px; font-family: ‘Bebas Neue’, sans-serif; color: var(–dark); display: block; line-height: 1; }
+
+/* ===== SIGNUP ===== */
+#signup { background: var(–cream); }
+.signup-header { background: var(–green); padding: 80px 24px 40px; text-align: center; color: #fff; }
+.signup-header h2 { font-family:‘Bebas Neue’,sans-serif; font-size: clamp(36px,7vw,64px); margin-bottom: 8px; }
+.signup-header p { font-size: 15px; opacity: 0.8; font-weight: 300; }
+.selected-summary { background: var(–dark); color: #fff; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.ss-plan { font-family:‘Bebas Neue’,sans-serif; font-size: 22px; letter-spacing: 1px; }
+.ss-price { font-size: 20px; font-weight: 700; color: var(–green-light); }
+.ss-first { font-size: 12px; color: var(–gold); font-weight: 600; }
+.form-wrap { max-width: 620px; margin: 0 auto; padding: 50px 24px 80px; }
+.field-group { margin-bottom: 20px; }
+.field-group label { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: var(–muted); margin-bottom: 8px; }
+.field-group input, .field-group select, .field-group textarea { width: 100%; border: 1.5px solid rgba(0,0,0,0.12); background: #fff; padding: 14px 16px; font-family: ‘Nunito’, sans-serif; font-size: 15px; font-weight: 400; color: var(–text); border-radius: 4px; outline: none; transition: border-color 0.2s; }
+.field-group input:focus, .field-group select:focus, .field-group textarea:focus { border-color: var(–green); }
+.field-group textarea { resize: vertical; min-height: 90px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:500px){ .two-col { grid-template-columns: 1fr; } }
+.quote-fields { display: none; }
+.quote-fields.show { display: block; }
+.quote-note-box { background: #FFF8E7; border: 1.5px solid var(–gold); border-radius: 4px; padding: 16px 18px; font-size: 14px; color: var(–dark); line-height: 1.6; margin-bottom: 24px; display: none; }
+.quote-note-box.show { display: block; }
+.submit-btn { width: 100%; padding: 18px; background: var(–green); color: #fff; border: none; border-radius: 4px; font-family: ‘Nunito’, sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 8px; }
+.submit-btn:hover { background: var(–green-light); transform: translateY(-1px); }
+
+/* ===== REFERRAL ===== */
+#referral {
+background: var(–dark);
+padding: 120px 24px 100px;
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+text-align: center; position: relative; overflow: hidden;
+}
+#referral::before {
+content: ‘’; position: absolute; inset: 0;
+background: radial-gradient(ellipse at 70% 30%, rgba(212,168,54,0.2) 0%, transparent 55%),
+radial-gradient(ellipse at 20% 80%, rgba(61,139,90,0.2) 0%, transparent 50%);
+pointer-events: none;
+}
+.ref-icon { font-size: 72px; margin-bottom: 28px; position: relative; }
+.ref-headline { font-family:‘Bebas Neue’,sans-serif; font-size: clamp(36px,8vw,72px); color: #fff; line-height: 0.95; margin-bottom: 20px; position: relative; }
+.ref-headline em { color: var(–gold); font-style: normal; }
+.ref-sub { font-size: 16px; color: rgba(255,255,255,0.55); max-width: 460px; line-height: 1.7; margin-bottom: 40px; font-weight: 300; position: relative; }
+.ref-offer { background: rgba(212,168,54,0.12); border: 1.5px solid rgba(212,168,54,0.4); border-radius: 6px; padding: 20px 24px; margin-bottom: 32px; position: relative; width: 100%; max-width: 420px; }
+.ref-offer h3 { font-family:‘Bebas Neue’,sans-serif; font-size: 28px; color: var(–gold); margin-bottom: 6px; letter-spacing: 1px; }
+.ref-offer p { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.6; }
+.ref-form { width: 100%; max-width: 420px; position: relative; }
+.ref-form .field-group label { color: rgba(255,255,255,0.4); }
+.ref-form input { background: rgba(255,255,255,0.07) !important; border-color: rgba(255,255,255,0.15) !important; color: #fff !important; }
+.ref-form input::placeholder { color: rgba(255,255,255,0.3); }
+.ref-form input:focus { border-color: var(–gold) !important; }
+.ref-link { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.3); }
+.ref-link button { background: none; border: none; color: var(–green-light); cursor: pointer; font-size: 13px; font-family: ‘Nunito’, sans-serif; text-decoration: underline; }
+
+/* ===== SUCCESS ===== */
+#success {
+background: var(–green);
+min-height: 70vh;
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+text-align: center; padding: 80px 24px;
+}
+.success-icon { font-size: 80px; margin-bottom: 28px; }
+#success h2 { font-family:‘Bebas Neue’,sans-serif; font-size: clamp(42px,9vw,80px); color: #fff; margin-bottom: 16px; letter-spacing: 1px; }
+#success p { font-size: 17px; color: rgba(255,255,255,0.8); max-width: 420px; line-height: 1.7; font-weight: 300; }
+
+/* FOOTER */
+footer { background: var(–dark); color: rgba(255,255,255,0.3); text-align: center; padding: 30px 24px; font-size: 13px; font-weight: 300; }
+footer strong { color: var(–green-light); font-weight: 600; }
+
+/* Fade in animation for revealed sections */
+@keyframes revealFade {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.funnel-section.revealed {
+animation: revealFade 0.6s ease forwards;
+}
+</style>
+
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-brand">Doggy Business</span>
+  <span>🐾</span>
+</div>
+
+<!-- ===== HOOK ===== -->
+
+<section id="hook">
+  <span class="hook-paw">💩</span>
+  <p class="hook-brand">Doggy Business</p>
+  <h1 class="hook-headline">We lift your<br>dog poo so<br><em>you don't</em><br>have to.</h1>
+  <p class="hook-sub">Professional, hygienic garden waste removal.</p>
+  <div class="hook-buttons">
+    <button class="btn btn-primary" onclick="reveal('pricing')">✅ Yes, I'm in — take me to prices</button>
+    <button class="btn btn-secondary" onclick="reveal('about')">🤔 Interested but need more info</button>
+    <button class="btn btn-ghost" onclick="reveal('referral')">😄 Not interested — I love picking up poo</button>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+
+<section id="about" class="funnel-section">
+  <div class="about-hero">
+    <h2>Here's What We Do</h2>
+    <p>Simple, hygienic, and reliable — we take care of the messy bit so your garden stays fresh.</p>
+  </div>
+  <div class="about-steps">
+    <div class="step">
+      <div class="step-icon">🚶</div>
+      <div class="step-text">
+        <h3>We come to you</h3>
+        <p>On your chosen schedule — weekly or fortnightly — we arrive at your property and get straight to work.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-icon">🧹</div>
+      <div class="step-text">
+        <h3>Full garden clear</h3>
+        <p>We scour your entire garden and collect every bit of dog waste. No corners cut, no mess left behind.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-icon">🛍️</div>
+      <div class="step-text">
+        <h3>Double bagged & binned</h3>
+        <p>Every collection is double bagged for hygiene and placed directly into your black bin. Nothing left on your property.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-icon">🧴</div>
+      <div class="step-text">
+        <h3>Sterilised equipment</h3>
+        <p>All tools are fully sterilised and cleaned between every single garden. Your hygiene matters to us.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-icon">➡️</div>
+      <div class="step-text">
+        <h3>On to the next</h3>
+        <p>We move efficiently through our route so you always know when to expect us. No fuss, no bother.</p>
+      </div>
+    </div>
+  </div>
+  <div class="about-cta-box">
+    <h3>Sound good?</h3>
+    <p>Join dog owners across the area with cleaner, fresher gardens.</p>
+    <div class="about-buttons">
+      <button class="btn btn-primary" onclick="reveal('pricing')">✅ I'm in — show me prices</button>
+      <button class="btn btn-outline-muted" onclick="reveal('referral')">Not for me — but I know someone!</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+
+<section id="pricing" class="funnel-section">
+  <div class="pricing-header">
+    <h2>Simple, honest pricing</h2>
+    <p>Pay monthly, upfront. No contracts, no hidden fees.</p>
+  </div>
+  <div class="offer-banner">🎁 First visit FREE with every plan! <span>— Your first month is discounted automatically.</span></div>
+  <div class="plans-wrap">
+
+```
+<!-- WEEKLY -->
+<div class="plan featured">
+  <div class="plan-header">
+    <span class="plan-tag">⭐ Most Popular</span>
+    <p class="plan-name">Weekly</p>
+    <p class="plan-freq-label">One visit every week</p>
+  </div>
+  <div class="plan-body">
+    <div class="price-row"><span class="price-big">£20</span><span class="price-unit">per visit</span></div>
+    <p class="price-monthly" id="w-monthly">£80 / month (4 visits)</p>
+    <p class="price-first" id="w-first">🎁 First month just £60 — 1st visit free!</p>
+    <div class="dog-row">
+      <label>🐶 Dogs</label>
+      <div class="counter-wrap">
+        <button class="cnt-btn" onclick="changeDog('w',-1)">−</button>
+        <span class="cnt-num" id="w-count">1</span>
+        <button class="cnt-btn" onclick="changeDog('w',1)">+</button>
+      </div>
+      <span class="cnt-extra" id="w-extra"></span>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:18px;font-weight:300;">+£2.50 per extra dog, per visit</p>
+    <ul class="plan-features">
+      <li>Weekly scheduled visit</li>
+      <li>Full garden clear</li>
+      <li>Double bagged & binned</li>
+      <li>Sterilised equipment</li>
+      <li>SMS confirmation each visit</li>
+    </ul>
+    <button class="plan-cta" onclick="selectPlan('weekly')">Sign Me Up →</button>
+  </div>
+</div>
+
+<!-- FORTNIGHTLY -->
+<div class="plan">
+  <div class="plan-header">
+    <span class="plan-tag">Great Value</span>
+    <p class="plan-name">Fortnightly</p>
+    <p class="plan-freq-label">One visit every two weeks</p>
+  </div>
+  <div class="plan-body">
+    <div class="price-row"><span class="price-big">£15</span><span class="price-unit">per visit</span></div>
+    <p class="price-monthly" id="f-monthly">£30 / month (2 visits)</p>
+    <p class="price-first" id="f-first">🎁 First month just £15 — 1st visit free!</p>
+    <div class="dog-row">
+      <label>🐶 Dogs</label>
+      <div class="counter-wrap">
+        <button class="cnt-btn" onclick="changeDog('f',-1)">−</button>
+        <span class="cnt-num" id="f-count">1</span>
+        <button class="cnt-btn" onclick="changeDog('f',1)">+</button>
+      </div>
+      <span class="cnt-extra" id="f-extra"></span>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:18px;font-weight:300;">+£2.50 per extra dog, per visit</p>
+    <ul class="plan-features">
+      <li>Fortnightly scheduled visit</li>
+      <li>Full garden clear</li>
+      <li>Double bagged & binned</li>
+      <li>Sterilised equipment</li>
+      <li>SMS confirmation each visit</li>
+    </ul>
+    <button class="plan-cta" onclick="selectPlan('fortnightly')">Sign Me Up →</button>
+  </div>
+</div>
+
+<!-- ONE OFF -->
+<div class="plan oneoff">
+  <div class="plan-header">
+    <span class="plan-tag">Flexible</span>
+    <p class="plan-name">One-Off</p>
+    <p class="plan-freq-label">Single visit — we assess & quote</p>
+  </div>
+  <div class="plan-body">
+    <div class="oneoff-price">
+      <strong>£120+</strong>
+      Starting from — we'll visit, assess your garden, and give you a tailored quote based on size and number of dogs.
+    </div>
+    <ul class="plan-features">
+      <li>One-time deep clear</li>
+      <li>On-site assessment & quote</li>
+      <li>Double bagged & binned</li>
+      <li>Sterilised equipment</li>
+      <li>No commitment required</li>
+    </ul>
+    <button class="plan-cta" style="background:var(--dark)" onclick="selectPlan('oneoff')">Request a Quote →</button>
+  </div>
+</div>
+```
+
+  </div>
+  <footer>© 2026 <strong>Doggy Business</strong> — Keeping gardens clean, tails wagging.</footer>
+</section>
+
+<!-- ===== SIGNUP ===== -->
+
+<section id="signup" class="funnel-section">
+  <div class="signup-header">
+    <h2>Almost there!</h2>
+    <p>Fill in your details and we'll be in touch to confirm your first visit.</p>
+  </div>
+  <div class="selected-summary">
+    <div>
+      <div class="ss-plan" id="ss-plan-name">—</div>
+      <div class="ss-first" id="ss-first-month"></div>
+    </div>
+    <div class="ss-price" id="ss-price">—</div>
+  </div>
+  <div class="form-wrap">
+    <div class="quote-note-box" id="quote-note-box">
+      📋 <strong>One-Off Quote:</strong> We'll review your details and contact you within 24 hours with a personalised quote.
+    </div>
+    <div class="two-col">
+      <div class="field-group"><label>First Name</label><input type="text" id="fname" placeholder="e.g. Sarah"></div>
+      <div class="field-group"><label>Last Name</label><input type="text" id="lname" placeholder="e.g. Johnson"></div>
+    </div>
+    <div class="field-group"><label>Email Address</label><input type="email" id="email" placeholder="sarah@example.com"></div>
+    <div class="field-group"><label>Phone Number</label><input type="tel" id="phone" placeholder="07700 900000"></div>
+    <div class="field-group"><label>Home Address</label><input type="text" id="address" placeholder="Street, Town, Postcode"></div>
+    <div class="quote-fields" id="quote-extra-fields">
+      <div class="two-col">
+        <div class="field-group">
+          <label>Garden Size</label>
+          <select id="garden-size">
+            <option value="">Select size</option>
+            <option>Small (up to 30m²)</option>
+            <option>Medium (30–80m²)</option>
+            <option>Large (80–150m²)</option>
+            <option>Very Large (150m²+)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Number of Dogs</label>
+          <select id="num-dogs-quote"><option>1</option><option>2</option><option>3</option><option>4+</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="field-group"><label>Anything else? (optional)</label><textarea id="notes" placeholder="e.g. gate access, preferred days, nervous dog..."></textarea></div>
+    <button class="submit-btn" onclick="submitForm()">Submit My Request 🐾</button>
+  </div>
+</section>
+
+<!-- ===== REFERRAL ===== -->
+
+<section id="referral" class="funnel-section">
+  <div class="ref-icon">🏘️</div>
+  <h2 class="ref-headline">We all know<br><em>that neighbour</em><br>with that garden.</h2>
+  <p class="ref-sub">You know the one. Refer them to us — and when you finally decide to use us yourself, you'll get <strong style="color:var(--gold)">10% off for an entire year.</strong></p>
+  <div class="ref-offer">
+    <h3>🎁 Your Referral Reward</h3>
+    <p>Refer a friend or neighbour today. When you sign up, just mention their name and we'll apply 10% off your first 12 months automatically.</p>
+  </div>
+  <div class="ref-form">
+    <div class="field-group"><label>Your Name (optional)</label><input type="text" id="ref-your-name" placeholder="Your name"></div>
+    <div class="field-group"><label>Your Email (to claim your discount later)</label><input type="email" id="ref-your-email" placeholder="your@email.com"></div>
+    <div class="field-group"><label>Who are you referring?</label><input type="text" id="ref-their-name" placeholder="Their name or address"></div>
+    <button class="btn btn-primary" style="margin-top:8px;" onclick="submitReferral()">Send My Referral 🐾</button>
+    <p class="ref-link">Changed your mind? <button onclick="reveal('pricing')">See our plans</button></p>
+  </div>
+</section>
+
+<!-- ===== SUCCESS ===== -->
+
+<section id="success" class="funnel-section">
+  <div class="success-icon">🎉</div>
+  <h2>You're all set!</h2>
+  <p id="success-msg">Thanks for getting in touch with Doggy Business. We'll be in touch shortly!</p>
+</section>
+
+<script>
+  let dogs = { w: 1, f: 1 };
+  let chosenPlan = null;
+  const revealed = new Set();
+
+  function reveal(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    // If already revealed, just scroll to it
+    if (revealed.has(id)) {
+      scrollTo(el);
+      return;
+    }
+
+    revealed.add(id);
+    el.classList.add('revealed');
+
+    // Small delay so the element renders before we scroll
+    setTimeout(() => scrollTo(el), 50);
+  }
+
+  function scrollTo(el) {
+    const offset = 60; // topbar height
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function changeDog(plan, delta) {
+    dogs[plan] = Math.max(1, dogs[plan] + delta);
+    document.getElementById(plan + '-count').textContent = dogs[plan];
+    const extra = (dogs[plan] - 1) * 2.5;
+    document.getElementById(plan + '-extra').textContent = extra > 0 ? `+£${extra.toFixed(2)}/visit` : '';
+    updatePlanPrices(plan);
+  }
+
+  function updatePlanPrices(plan) {
+    const d = dogs[plan];
+    const extra = (d - 1) * 2.5;
+    if (plan === 'w') {
+      const pv = 20 + extra;
+      document.getElementById('w-monthly').textContent = `£${(pv * 4).toFixed(2)} / month (4 visits)`;
+      document.getElementById('w-first').textContent = `🎁 First month just £${(pv * 3).toFixed(2)} — 1st visit free!`;
+    } else {
+      const pv = 15 + extra;
+      document.getElementById('f-monthly').textContent = `£${(pv * 2).toFixed(2)} / month (2 visits)`;
+      document.getElementById('f-first').textContent = `🎁 First month just £${pv.toFixed(2)} — 1st visit free!`;
+    }
+  }
+
+  function selectPlan(plan) {
+    chosenPlan = plan;
+    const labels = { weekly: 'Weekly Plan', fortnightly: 'Fortnightly Plan', oneoff: 'One-Off Quote' };
+    document.getElementById('ss-plan-name').textContent = labels[plan];
+
+    if (plan === 'weekly') {
+      const extra = (dogs.w - 1) * 2.5;
+      const pv = 20 + extra;
+      document.getElementById('ss-price').textContent = `£${(pv * 4).toFixed(2)} / month`;
+      document.getElementById('ss-first-month').textContent = `🎁 First month: £${(pv * 3).toFixed(2)}`;
+    } else if (plan === 'fortnightly') {
+      const extra = (dogs.f - 1) * 2.5;
+      const pv = 15 + extra;
+      document.getElementById('ss-price').textContent = `£${(pv * 2).toFixed(2)} / month`;
+      document.getElementById('ss-first-month').textContent = `🎁 First month: £${pv.toFixed(2)}`;
+    } else {
+      document.getElementById('ss-price').textContent = 'From £120';
+      document.getElementById('ss-first-month').textContent = "We'll send you a tailored quote";
+    }
+
+    const isOneOff = plan === 'oneoff';
+    document.getElementById('quote-extra-fields').classList.toggle('show', isOneOff);
+    document.getElementById('quote-note-box').classList.toggle('show', isOneOff);
+
+    reveal('signup');
+  }
+
+  function submitForm() {
+    const fname = document.getElementById('fname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    if (!fname || !email || !phone || !address) { alert('Please fill in your name, email, phone and address.'); return; }
+    document.getElementById('success-msg').textContent = chosenPlan === 'oneoff'
+      ? `Thanks ${fname}! We'll be in touch within 24 hours with your personalised quote. 🐾`
+      : `Thanks ${fname}! We'll be in touch to confirm your first visit — your first visit is on us! 🐾`;
+    reveal('success');
+  }
+
+  function submitReferral() {
+    const name = document.getElementById('ref-their-name').value.trim();
+    if (!name) { alert("Please enter who you're referring!"); return; }
+    document.getElementById('success-msg').textContent = `Thanks for the referral! When you sign up in future, just mention their name and we'll apply 10% off your first year automatically. 🐾`;
+    reveal('success');
+  }
+</script>
+
+</body>
+</html>
